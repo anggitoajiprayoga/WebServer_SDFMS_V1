@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FMS SDCMS DT V1 </title>
     <style>
 
@@ -33,7 +33,7 @@
         display: inline-block;
         background-color: #ff5f5f;
         color: white;
-        padding: 10px 15px;
+     padding: 10px 15px;
         text-decoration: none;
         border-radius: 4px;
     }
@@ -158,7 +158,32 @@
     .label2 > div {
         flex: 1; /* Memiliki flex 1 untuk memenuhi ruang yang tersedia */
     }
+    #container-en_view{
+        display: flex;
+        gap: 1em;
 
+    }
+    #ind{
+        display: inline-block;
+        position: absolute;
+        right: 2em;
+        top: 2em;
+    }
+    .forms{
+        position: relative;
+    }
+    #ind>span{
+        display: inline-block ;
+        width: 1.5em;
+        height: 1.5em;
+        border-radius: 2em;
+    }
+    .redpoint{
+        background: #D80032;
+    }
+    .greenpoint{
+        background: #219C90;
+    }
 </style>
 <script>
     function submitMessage() {
@@ -265,47 +290,24 @@
         var containerfms = document.getElementById('container-en_fms');
         if (typeof en_fms !== 'undefined') {
             var valUe = en_fms.value;
-            if (valUe === 'true') {
-                containerfms.style.display = 'block';
-            } else {
-                containerfms.style.display = 'none';
-            }
         }
         var en_overspeed = document.getElementById('en_overspeed');
         var containeroverspeed = document.getElementById('container-en_overspeed');
         if (typeof en_overspeed !== 'undefined') {
             var value = en_overspeed.value;
-            if (value === 'true') {
-                containeroverspeed.style.display = 'block';
-            } else {
-                containeroverspeed.style.display = 'none';
-            }
         }
         var en_fms = document.getElementById('en_fms');
         var containerfms = document.getElementById('container-en_view');
         if (typeof en_fms !== 'undefined') {
             var valUe = en_fms.value;
-            if (valUe === 'false') {
-                containerfms.style.display = 'block';
-            } else {
-                containerfms.style.display = 'none';
-            }
         }
         var en_fms = document.getElementById('en_fms');
         var containerfms = document.getElementById('container-view');
         if (typeof en_fms !== 'undefined') {
             var valUe = en_fms.value;
-            if (valUe === 'true') {
-                containerfms.style.display = 'block';
-            } else {
-                containerfms.style.display = 'none';
-            }
         }
-        console.log(data)
-        for(let obj in data){
-            document.querySelector(`#${obj}`).innerHTML(data[obj])
-            console.log(data[obj])
-        }
+        let element = document.querySelector('#en_fms').value
+        document.querySelector('#fms-info').style.display = element == 'true' ? 'block' : 'none'
     }
 
 var gateway = `ws://${window.location.hostname}/ws`;
@@ -351,15 +353,23 @@ function onMessage(event) {
 function showDataOnElement(data){
     let myObj = JSON.parse(data)
     var keys = Object.keys(myObj);
+    console.log(myObj)
     for (var i = 0; i < keys.length; i++){
         var key = keys[i];
         document.getElementById(key).innerHTML = myObj[key];
+        if(key == 'ind'){
+            if(myObj['ind'] =='|'){
+                document.getElementById(key).innerHTML = '<span class="redpoint"></span>';
+            } else {
+                document.getElementById(key).innerHTML = '<span class="greenpoint"></span>';
+            }
+        }
     }
 }
 </script>
 </head>
 <body>
-    <div class="form-style-10">
+    <div class="form-style-10 forms" >
         <h1>FMS SDCMS DT V1 &nbsp &nbsp <button onclick="logoutButton()">Logout</button> <span>Form Configuration device</span>
             <span>~version~</span>
             <span>~type_board~</span>
@@ -375,73 +385,42 @@ function showDataOnElement(data){
             </form>
             <br>
         <div id="container-en_view">
-            <div class="label2 "><strong>Realtime Detail Info: &nbsp; <span id="ind"></span></strong></div>
-            <div class="label2 ">CN :  &nbsp; <span id="cn"></span> &nbsp; </div>
-            <div class="label2 ">Date/Time :  &nbsp; <span id="datetime"></span> &nbsp; </div>
-            <div class="label2 ">Latitude :  &nbsp; <span id="lat"></span> &nbsp; </div>
-            <div class="label2 ">Longitude :  &nbsp; <span id="long"></span> &nbsp; </div>
-            <div class="label2 ">Altitude :  &nbsp; <span id="alt"></span> &nbsp; mdpl</div>
-            <div class="label2 ">Speed :  &nbsp; <span id="spd"></span> &nbsp; km/h </div>
-            <div class="label2 ">Heading :  &nbsp; <span id="heading"></span> &nbsp; &deg; </div>
-            <div class="label2 ">Satellite :  &nbsp; <span id="sat"></span> &nbsp;  </div>
-            <div class="label2 ">Angle :  &nbsp; <span id="agl"></span> &nbsp; &deg; </div>     
-            <div class="label2 ">Fatique :  &nbsp; <span id="fatique"></span> &nbsp;  </div>
-            <div class="label2 ">State Network :  &nbsp; <span id="fatique"></span> &nbsp;  </div>     
-        </div>
-        <div id="container-view" style="display: none;">
-            <div class="label2 "><strong>Realtime Detail Info: &nbsp; <span id="ind"></span></strong></div>
-            <div class="label2">
+            <div>
+                <div class="label2 "><strong>Realtime Detail Info: &nbsp; <span id="ind"></span></strong></div>
+                <div class="label2 ">CN :  &nbsp; <span id="cn"></span> &nbsp; </div>
+                <div class="label2 ">Date/Time :  &nbsp; <span id="datetime"></span> &nbsp; </div>
+                <div class="label2 ">Latitude :  &nbsp; <span id="lat"></span> &nbsp; </div>
+                <div class="label2 ">Longitude :  &nbsp; <span id="long"></span> &nbsp; </div>
+                <div class="label2 ">Altitude :  &nbsp; <span id="alt"></span> &nbsp; mdpl</div>
+                <div class="label2 ">Speed :  &nbsp; <span id="spd"></span> &nbsp; km/h </div>
+                <div class="label2 ">Heading :  &nbsp; <span id="heading"></span> &nbsp; &deg; </div>
+                <div class="label2 ">Satellite :  &nbsp; <span id="sat"></span> &nbsp;  </div>
+                <div class="label2 ">Angle :  &nbsp; <span id="agl"></span> &nbsp; &deg; </div>     
+                <div class="label2 ">Fatique :  &nbsp; <span id="fatique"></span> &nbsp;  </div>
+                <div class="label2 ">State Network :  &nbsp; <span id="fatique"></span> &nbsp;  </div>
+                <div>Adc PTO/State PTO:  &nbsp; <span id="state_pto"></span> &nbsp; </div>
+                <div class="label2 ">State Network :  &nbsp; <span id="fatique"></span> &nbsp;  </div>
+                <div class="label2 ">Signal Quality :  &nbsp; <span id="csq"></span> &nbsp;  </div>     
+            </div>
+            <div id="fms-info">
+                <div class="label2 "><strong>FMS Info: &nbsp; </strong></div>
                 <div>Brand :  &nbsp; <span id="brand"></span> &nbsp; </div>
                 <div>Engine Speed: :  &nbsp; <span id="engSpeed"></span> &nbsp; RPM</div>
-            </div>
-            <div class="label2">
                 <div>Fuel Level :  &nbsp; <span id="fuelLvl"></span> &nbsp; &percnt;</div>
                 <div>Vehicle Speed :  &nbsp; <span id="vehSpeed"></span> &nbsp; km/h</div>
-            </div>
-            <div class="label2">
-            <div>Altitude :  &nbsp; <span id="alt"></span> &nbsp; mdpl</div>
-            <div>Actual Retarder :  &nbsp; <span id="actRet"></span> &nbsp; &percnt;</div>
-            <!-- <div>  &nbsp;  &nbsp; </div>    -->
-            <div class="label2">
+                <div>Altitude :  &nbsp; <span id="alt"></span> &nbsp; mdpl</div>
+                <div>Actual Retarder :  &nbsp; <span id="actRet"></span> &nbsp; &percnt;</div>
                 <div>Brake Pedal Position :  &nbsp; <span id="brakePedPos"></span> &nbsp; </div>
-                <!-- <div>  &nbsp;  &nbsp; </div>     -->
-            </div>
-            <div class="label2">
                 <div>Brake Pedal Position :  &nbsp; <span id="brakePedPos"></span> &nbsp; </div>
-                <!-- <div>  &nbsp;  &nbsp; </div>     -->
-            </div>
-            <div class="label2">
-              <div>Air Pressure Brake 1 :  &nbsp; <span id="airPress1"></span> &nbsp; Bar</div>
-              <!-- <div>  &nbsp;  &nbsp; </div> -->
-            </div>
-            <div class="label2">
+                <div>Air Pressure Brake 1 :  &nbsp; <span id="airPress1"></span> &nbsp; Bar</div>
                 <div>Air Pressure Brake 2 :  &nbsp; <span id="airPress2"></span> &nbsp; Bar</div>
-                <!-- <div>  &nbsp;  &nbsp; </div> -->
-            </div>
-            <div class="label2">
-              <div>Air Pressure Brake 3 :  &nbsp; <span id="airPress3"></span> &nbsp; Bar</div>
-              <!-- <div>  &nbsp;  &nbsp; </div> -->
-            </div>
-          
-            <div class="label2">
+                <div>Air Pressure Brake 3 :  &nbsp; <span id="airPress3"></span> &nbsp; Bar</div>
                 <div>Engine Revolution :  &nbsp; <span id="engEr"></span> &nbsp; </div>
-                <!-- <div>  &nbsp;  &nbsp; </div> -->
-            </div>
-            <div class="label2">
                 <div>Fuel Rate :  &nbsp; <span id="fuelRate"></span> &nbsp; L/h</div>
                 <div>Engine Hours Meter :  &nbsp; &nbsp; <span id="engHm"></span> &nbsp; H</div>
-                <!-- <div>  &nbsp;  &nbsp; </div> -->
-            </div>
-            <div class="label2">
                 <div>Engine Torque:  &nbsp; <span id="engTorque"></span> &percnt;&nbsp; </div>
-                <div>Adc PTO/State PTO:  &nbsp; <span id="state_pto"></span> &nbsp; </div>
-            </div>
-            <div class="label2">
-                <div class="label2 ">State Network :  &nbsp; <span id="fatique"></span> &nbsp;  </div>
-                <div class="label2 ">Signal Quality :  &nbsp; <span id="csq"></span> &nbsp;  </div>
             </div>
         </div>
-    </div>
 
 <br>
 <form action="/get">
@@ -513,6 +492,7 @@ function showDataOnElement(data){
     <button type="submit" onclick="submitMessage()">Simpan</button>
 </fieldset>
 </form>
+</div>
 <br>
 <center>
     <p><b>Firmware:</b> ~version~</p>
